@@ -51,11 +51,7 @@ let quantity=0;
 const money=n=>'$'+n.toLocaleString('es-AR');
 function whatsappUrl(message){
  const phone='5492612504425';
- const encoded=encodeURIComponent(message);
- const mobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
- return mobile
-  ? 'https://wa.me/'+phone+'?text='+encoded
-  : 'https://web.whatsapp.com/send?phone='+phone+'&text='+encoded;
+ return 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURIComponent(message);
 }
 function contactWhatsApp(){
  window.open(whatsappUrl('Hola TECHZONE, quiero hacer una consulta.'),'_blank','noopener');
