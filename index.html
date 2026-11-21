@@ -15,7 +15,7 @@ header{display:none}.top{display:none}.brand img{display:none}
 .catalog-head{text-align:center;padding:28px 0 34px}.eyebrow{font-size:12px;letter-spacing:5px;text-transform:uppercase;font-weight:900;color:var(--cyan)}h1{font-size:clamp(42px,7vw,76px);line-height:1.02;letter-spacing:-2px;margin:12px 0;background:linear-gradient(90deg,#fff,var(--cyan),#a89aff,var(--pink));background-clip:text;color:transparent}.catalog-head p{color:var(--muted);margin:0}
 .product{display:grid;grid-template-columns:1fr;gap:8px;align-items:start;padding:10px;max-width:300px;width:100%;margin:0 0 34px;border:1px solid #263b5c;border-radius:16px;background:#111a2d;box-shadow:0 8px 25px #0003;transition:border-color .2s,box-shadow .2s}.product.viewing{border-color:#9aa4b5;background:#182235;box-shadow:0 0 0 2px #aab3c222,0 12px 30px #0004}
 .gallery{min-width:0;position:relative;display:flex;flex-direction:column;gap:14px}
-.stage{position:relative;height:220px;width:100%;overflow:hidden;border-radius:12px;background:#0b1220;touch-action:pan-y}
+.stage{position:relative;height:260px;width:100%;overflow:hidden;border-radius:12px;background:#0b1220;touch-action:pan-y}
 .slides{height:100%;display:flex;transition:transform .35s ease}
 .slide{flex:0 0 100%;min-width:100%;height:100%;display:grid;place-items:center;padding:0;overflow:hidden}
 .slide img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center;display:block;user-select:none;-webkit-user-drag:none}
@@ -49,9 +49,9 @@ header{display:none}.top{display:none}.brand img{display:none}
 <div class="gallery">
 <div class="stage" id="stage">
 <div class="slides" id="slides">
-<div class="slide"><img src="images/images/airpods 2.jpeg" alt="AirPods Pro 2 Premium — foto principal"></div>
-<div class="slide"><img src="images/images/airpods 3.jpeg" alt="AirPods Pro 2 Premium — segunda foto"></div>
-<div class="slide"><img src="images/images/airpods 1.jpeg" alt="AirPods Pro 2 Premium — tercera foto"></div>
+<div class="slide"><img src="images/images/airpods 3.jpeg" alt="AirPods Pro 2 Premium — foto principal"></div>
+<div class="slide"><img src="images/images/airpods 1.jpeg" alt="AirPods Pro 2 Premium — segunda foto"></div>
+<div class="slide"><img src="images/images/airpods 2.jpeg" alt="AirPods Pro 2 Premium — tercera foto"></div>
 </div>
 <button class="arrow prev" onclick="moveSlide(-1)" aria-label="Imagen anterior">‹</button><button class="arrow next" onclick="moveSlide(1)" aria-label="Imagen siguiente">›</button>
 </div><div class="dots" aria-label="Elegir imagen"><button class="dot active" onclick="showSlide(0)" aria-label="Imagen 1"></button><button class="dot" onclick="showSlide(1)" aria-label="Imagen 2"></button><button class="dot" onclick="showSlide(2)" aria-label="Imagen 3"></button></div>
@@ -60,7 +60,7 @@ header{display:none}.top{display:none}.brand img{display:none}
 <h2>Airpods Pro 2 Premium - Auriculares Bluetooth con Cancelación de Ruido</h2>
 <div class="desc"><strong>Airpods Pro 2 Premium 🎧</strong><br>Auriculares Bluetooth Premium, compatible con iPhone y Android.
 <ul><li>Cancelación activa de ruido + modo transparencia</li><li>Sonido envolvente y micrófono para llamadas</li><li>Estuche de carga inalámbrica USB-C</li><li>Conexión instantánea, muestra batería en pantalla</li><li>Incluye caja, cable y puntas de repuesto en 3 tamaños</li></ul></div>
-<div class="price">$30.000</div><div class="stock">● Consultá disponibilidad por WhatsApp</div>
+<div class="price" id="priceDisplay">$30.000</div><div id="priceHint" class="stock" style="margin-top:-5px">1 unidad · $30.000</div><div class="stock">● Consultá disponibilidad por WhatsApp</div>
 <div class="buyrow"><div class="quantity"><button onclick="changeSelected(-1)" aria-label="Restar unidad">−</button><strong id="selectedQty">1</strong><button onclick="changeSelected(1)" aria-label="Sumar unidad">+</button></div><button class="primary" onclick="addToCart()">AGREGAR AL CARRITO</button></div>
 </div></article>
 <section class="cart-page" id="cartPage"><div class="cart-head">🛒 Tu carrito</div><div id="items" class="empty"><span class="empty-icon">🛒</span><strong>Carrito vacío</strong>Agregá un producto al carrito para verlo acá.</div><button class="clear-cart" id="clearCart" onclick="clearCart()" style="display:none">🧹 Vaciar carrito</button><div class="total"><span>Total</span><span id="total">$0</span></div><a id="checkout" class="wa" href="#" target="_blank" rel="noopener" style="display:none">CONTACTAR POR WHATSAPP</a></section>
@@ -75,9 +75,13 @@ const product={name:'Airpods Pro 2 Premium - Auriculares Bluetooth con Cancelaci
 let quantity=0,selectedQty=1,currentSlide=0,startX=0;
 const money=n=>'$'+n.toLocaleString('es-AR');
 function whatsappUrl(message){return 'https://wa.me/5492612504425?text='+encodeURIComponent(message)}
-function changeSelected(n){selectedQty=Math.max(1,Math.min(99,selectedQty+n));document.getElementById('selectedQty').textContent=selectedQty}
+function discountedTotal(q){return Math.floor(q/2)*55000+(q%2)*30000}
+function regularTotal(q){return q*30000}
+function priceMarkup(q){const regular=regularTotal(q),final=discountedTotal(q);if(q===1)return money(30000);return '<span style="font-size:.72em;color:#9eabc0;text-decoration:line-through;text-decoration-thickness:2px;margin-right:9px">'+money(regular)+'</span><span>'+money(final)+'</span>'}
+function updateSelectedPrice(){const total=discountedTotal(selectedQty),regular=regularTotal(selectedQty);document.getElementById('priceDisplay').innerHTML=priceMarkup(selectedQty);document.getElementById('priceHint').textContent=selectedQty===1?'1 unidad · $30.000':selectedQty+' unidades · Oferta aplicada: '+money(total)+' (antes '+money(regular)+')'}
+function changeSelected(n){selectedQty=Math.max(1,Math.min(99,selectedQty+n));document.getElementById('selectedQty').textContent=selectedQty;updateSelectedPrice()}
 function addToCart(){quantity+=selectedQty;renderCart();openCart()}
-function renderCart(){document.getElementById('count').textContent=quantity;document.getElementById('total').textContent=money(quantity*product.price);const items=document.getElementById('items'),checkout=document.getElementById('checkout');if(!quantity){items.className='empty';items.innerHTML='<span class="empty-icon">🛒</span><strong>Carrito vacío</strong>Agregá un producto al carrito para verlo acá.';checkout.style.display='none';document.getElementById('clearCart').style.display='none';return}items.className='';document.getElementById('clearCart').style.display='block';items.innerHTML='<div class="cartitem"><div><b>'+product.name+'</b><div class="muted">'+money(product.price)+' c/u</div></div><div class="qty"><button onclick="changeQty(-1)">−</button><b>'+quantity+'</b><button onclick="changeQty(1)">+</button></div></div>';const message='Hola TECHZONE! Quiero consultar por este pedido:\n\n• '+product.name+' x '+quantity+' = '+money(quantity*product.price)+'\nTotal: '+money(quantity*product.price);checkout.href=whatsappUrl(message);checkout.style.display='block'}
+function renderCart(){document.getElementById('count').textContent=quantity;document.getElementById('total').innerHTML=quantity>=2?'<span style="text-decoration:line-through;color:#9eabc0;font-size:.8em;margin-right:10px">'+money(regularTotal(quantity))+'</span>'+money(discountedTotal(quantity)):money(discountedTotal(quantity));const items=document.getElementById('items'),checkout=document.getElementById('checkout');if(!quantity){items.className='empty';items.innerHTML='<span class="empty-icon">🛒</span><strong>Carrito vacío</strong>Agregá un producto al carrito para verlo acá.';checkout.style.display='none';document.getElementById('clearCart').style.display='none';return}items.className='';document.getElementById('clearCart').style.display='block';items.innerHTML='<div class="cartitem"><div><b>'+product.name+'</b><div class="muted">'+money(product.price)+' c/u'+(quantity>=2?' · Oferta 2 x $55.000':'')+'</div><div style="margin-top:6px">'+(quantity>=2?'<span style="text-decoration:line-through;color:#9eabc0;margin-right:8px">'+money(regularTotal(quantity))+'</span>':'')+'<b>'+money(discountedTotal(quantity))+'</b></div></div><div class="qty"><button onclick="changeQty(-1)">−</button><b>'+quantity+'</b><button onclick="changeQty(1)">+</button></div></div>';const message='Hola TECHZONE! Quiero consultar por este pedido:\n\n• '+product.name+' x '+quantity+' = '+money(discountedTotal(quantity))+(quantity>=2?' (precio normal '+money(regularTotal(quantity))+', oferta aplicada)':'')+'\nTotal: '+money(discountedTotal(quantity));checkout.href=whatsappUrl(message);checkout.style.display='block'}
 function changeQty(n){quantity=Math.max(0,quantity+n);renderCart()}
 function clearCart(){quantity=0;renderCart()}
 function showCatalog(){document.body.classList.remove('cart-view');document.getElementById('cartPage').classList.remove('active');document.querySelectorAll('.catalog-tab').forEach((b,i)=>b.classList.toggle('active',i===0));document.getElementById('catalogo').classList.add('viewing');window.scrollTo({top:0,behavior:'smooth'})}
@@ -88,5 +92,5 @@ function closeCart(){showCatalog()}
 function showSlide(n){currentSlide=(n+3)%3;document.getElementById('slides').style.transform='translateX(-'+(currentSlide*100)+'%)';document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide))}
 function moveSlide(n){showSlide(currentSlide+n)}
 const stage=document.getElementById('stage');stage.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-startX;if(Math.abs(dx)>45)moveSlide(dx<0?1:-1)},{passive:true});
-document.getElementById('year').textContent=new Date().getFullYear();renderCart();
+document.getElementById('year').textContent=new Date().getFullYear();updateSelectedPrice();renderCart();
 </script></body></html>
