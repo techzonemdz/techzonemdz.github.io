@@ -16,6 +16,21 @@ header{position:sticky;top:0;z-index:20;background:#090b12e8;backdrop-filter:blu
 footer{border-top:1px solid #ffffff18;padding:30px 0;color:#929fb5;font-size:13px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .overlay{position:fixed;inset:0;background:#000a;z-index:40;opacity:0;pointer-events:none;transition:.2s}.overlay.open{opacity:1;pointer-events:auto}.drawer{position:fixed;right:0;top:0;height:100%;width:min(430px,100%);background:#121725;border-left:1px solid #384663;z-index:41;padding:25px;transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}.drawer.open{transform:translateX(0)}.drawerhead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:18px}.close{background:none;border:0;color:white;font-size:26px;cursor:pointer}.cartitem{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:1px solid var(--line)}.qty{display:flex;align-items:center;gap:10px}.qty button{background:#26334d;border:0;color:white;border-radius:8px;width:28px;height:28px;cursor:pointer}.total{margin-top:auto;padding:20px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:19px;font-weight:900}.wa{display:block;text-align:center;padding:16px;background:linear-gradient(110deg,#69f0bb,#42d9ff);color:#06130f;font-weight:950;border-radius:12px}.empty{color:var(--muted);padding:30px 0}
 @media(max-width:760px){.navlinks{display:none}.hero{grid-template-columns:1fr;padding:55px 0 35px;text-align:center;gap:20px}.hero p{margin:auto}.hero-actions{justify-content:center}.hero-logo{max-width:270px}.product{grid-template-columns:1fr}.gallery{grid-template-rows:240px 120px}.details{padding:28px 22px}.features{grid-template-columns:1fr}.section{padding:40px 0}.sectionhead{display:block}}
+
+.product{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.product:hover{transform:translateY(-7px);box-shadow:0 28px 80px #176dff30;border-color:#42d9ff99}
+.photo img{transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .35s ease}
+.photo:hover img{transform:scale(1.055);filter:saturate(1.12)}
+.feature{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.feature:hover{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 12px 35px #42d9ff18}
+.hero>div{animation:rise .7s ease both}
+.hero-logo{animation:floatLogo 5s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.wa-float{position:fixed;right:22px;bottom:22px;z-index:30;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#62f0b4,#16c784);color:#062418;font-size:27px;font-weight:900;box-shadow:0 10px 32px #16c78455;border:2px solid #c7ffe7;transition:transform .2s}
+.wa-float:hover{transform:translateY(-5px) scale(1.06)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
 </style></head><body>
 <header><div class="wrap nav"><a class="brand" href="#"><img src="assets/techzone-logo.svg" alt="Logo TECHZONE"><span>TECHZONE<small>MENDOZA</small></span></a><nav class="navlinks"><a href="#inicio">Inicio</a><a href="#catalogo">Catálogo</a><a href="#contacto">Contacto</a></nav><button class="cartbtn" onclick="openCart()">Carrito <span id="count">0</span></button></div></header>
 <main><section class="wrap hero" id="inicio"><div><div class="eyebrow">Tecnología · Mendoza, Argentina</div><h1>La tecnología<br><em>que buscás.</em></h1><p>Descubrí productos tecnológicos seleccionados, atención personalizada y una forma simple de hacer tu pedido.</p><div class="hero-actions"><a class="btn" href="#catalogo">Ver producto</a><a class="btn secondary" href="#contacto">Contactanos</a></div></div><img class="hero-logo" src="assets/techzone-logo.svg" alt="TECHZONE Mendoza"></section>
@@ -26,16 +41,41 @@ footer{border-top:1px solid #ffffff18;padding:30px 0;color:#929fb5;font-size:13p
 <div class="photo"><img src="images/airpods-3.jpg" alt="AirPods Pro 2 Premium — foto de empaque" onerror="this.parentElement.classList.add('missing');this.style.display='none';this.parentElement.innerHTML='📷<br>Foto 3<br><small>Se agregará tu imagen</small>'"></div>
 </div><div class="details"><div class="tag">Audio inalámbrico</div><h3>AirPods Pro 2 Premium</h3><p>Diseño inalámbrico, estuche de carga USB-C y formato in-ear. Consultanos por disponibilidad y detalles del producto.</p><div class="price">$30.000</div><div class="stock">● Consultá disponibilidad por WhatsApp</div><button class="add" onclick="addToCart()">AGREGAR AL CARRITO</button></div></article>
 <div class="features"><div class="feature"><b>Atención personalizada</b><span>Te respondemos directamente por WhatsApp.</span></div><div class="feature"><b>Pedido sencillo</b><span>Agregá el producto al carrito y enviá tu consulta.</span></div><div class="feature"><b>TECHZONE Mendoza</b><span>Tu tienda de tecnología y accesorios.</span></div></div>
-</section><section class="wrap section" id="contacto"><div class="eyebrow">¿Tenés dudas?</div><h2>Hablemos por WhatsApp.</h2><p class="muted">Consultá por stock, entregas y medios de pago.</p><a class="btn" href="https://web.whatsapp.com/send?phone=5492612504425&amp;text=Hola%20TECHZONE%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">Contactar</a></section></main>
+</section><section class="wrap section" id="contacto"><div class="eyebrow">¿Tenés dudas?</div><h2>Hablemos por WhatsApp.</h2><p class="muted">Consultá por stock, entregas y medios de pago.</p><a class="btn" href="#" onclick="contactWhatsApp();return false">Contactar</a></section></main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> TECHZONE Mendoza</span><span>Tecnología a tu alcance.</span></div></footer>
+<a class="wa-float" href="#" onclick="contactWhatsApp();return false" aria-label="Contactar por WhatsApp" title="Contactar por WhatsApp">✆</a>
 <div class="overlay" id="overlay" onclick="closeCart()"></div><aside class="drawer" id="drawer"><div class="drawerhead"><b>Tu carrito</b><button class="close" onclick="closeCart()" aria-label="Cerrar">×</button></div><div id="items" class="empty">Tu carrito está vacío.</div><div class="total"><span>Total</span><span id="total">$0</span></div><a id="checkout" class="wa" href="#" target="_blank" rel="noopener" style="display:none">CONTACTAR POR WHATSAPP</a></aside>
 <script>
-const product={name:'AirPods Pro 2 Premium',price:30000};let quantity=0;
+const product={name:'AirPods Pro 2 Premium',price:30000};
+let quantity=0;
 const money=n=>'$'+n.toLocaleString('es-AR');
+function whatsappUrl(message){
+ const phone='5492612504425';
+ const encoded=encodeURIComponent(message);
+ const mobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+ return mobile
+  ? 'https://wa.me/'+phone+'?text='+encoded
+  : 'https://web.whatsapp.com/send?phone='+phone+'&text='+encoded;
+}
+function contactWhatsApp(){
+ window.open(whatsappUrl('Hola TECHZONE, quiero hacer una consulta.'),'_blank','noopener');
+}
 function addToCart(){quantity++;renderCart();openCart()}
-function renderCart(){document.getElementById('count').textContent=quantity;document.getElementById('total').textContent=money(quantity*product.price);const items=document.getElementById('items'),checkout=document.getElementById('checkout');if(!quantity){items.className='empty';items.textContent='Tu carrito está vacío.';checkout.style.display='none';return}items.className='';items.innerHTML='<div class="cartitem"><div><b>'+product.name+'</b><div class="muted">'+money(product.price)+' c/u</div></div><div class="qty"><button onclick="changeQty(-1)">−</button><b>'+quantity+'</b><button onclick="changeQty(1)">+</button></div></div>';const msg='Hola TECHZONE! Quiero consultar por este pedido:%0A%0A• '+encodeURIComponent(product.name)+' x '+quantity+' = '+encodeURIComponent(money(quantity*product.price))+'%0A%0ATotal: '+encodeURIComponent(money(quantity*product.price));checkout.href='https://web.whatsapp.com/send?phone=5492612504425&text='+msg;checkout.style.display='block'}
+function renderCart(){
+ document.getElementById('count').textContent=quantity;
+ document.getElementById('total').textContent=money(quantity*product.price);
+ const items=document.getElementById('items');
+ const checkout=document.getElementById('checkout');
+ if(!quantity){items.className='empty';items.textContent='Tu carrito está vacío.';checkout.style.display='none';return}
+ items.className='';
+ items.innerHTML='<div class="cartitem"><div><b>'+product.name+'</b><div class="muted">'+money(product.price)+' c/u</div></div><div class="qty"><button onclick="changeQty(-1)">−</button><b>'+quantity+'</b><button onclick="changeQty(1)">+</button></div></div>';
+ const message='Hola TECHZONE! Quiero consultar por este pedido:\n\n• '+product.name+' x '+quantity+' = '+money(quantity*product.price)+'\nTotal: '+money(quantity*product.price);
+ checkout.href=whatsappUrl(message);
+ checkout.style.display='block';
+}
 function changeQty(n){quantity=Math.max(0,quantity+n);renderCart()}
 function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open')}
 function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
-document.getElementById('year').textContent=new Date().getFullYear();renderCart();
+document.getElementById('year').textContent=new Date().getFullYear();
+renderCart();
 </script></body></html>
